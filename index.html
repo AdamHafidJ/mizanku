@@ -1,0 +1,4555 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#2563eb">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MizanKu">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<title>MizanKu — Catatan Keuangan Pribadi</title>
+
+
+<style>
+
+/* =====================================================
+   DASAR
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #17202a;
+    --muted: #7b8794;
+    --border: #e5e7eb;
+
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+
+    --income: #16a34a;
+    --income-soft: #ecfdf5;
+
+    --expense: #dc2626;
+    --expense-soft: #fef2f2;
+
+    --shadow:
+        0 8px 25px rgba(0,0,0,0.06);
+}
+
+
+body.dark {
+
+    --bg: #111827;
+    --card: #1f2937;
+    --text: #f3f4f6;
+    --muted: #9ca3af;
+    --border: #374151;
+
+    --income-soft: #064e3b;
+    --expense-soft: #7f1d1d;
+
+    --shadow:
+        0 8px 25px rgba(0,0,0,0.25);
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        var(--bg);
+
+    color:
+        var(--text);
+
+    min-height:
+        100vh;
+
+    transition:
+        0.25s;
+}
+
+
+button,
+input,
+select {
+
+    font-family:
+        inherit;
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container {
+
+    width:
+        min(1150px, 94%);
+
+    margin:
+        auto;
+
+    padding:
+        25px 0 60px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        15px;
+
+    margin-bottom:
+        25px;
+}
+
+
+.logo h1 {
+
+    font-size:
+        28px;
+
+    margin-bottom:
+        5px;
+}
+
+
+.logo p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        14px;
+}
+
+
+.icon-btn {
+
+    width:
+        43px;
+
+    height:
+        43px;
+
+    border-radius:
+        12px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--card);
+
+    color:
+        var(--text);
+
+    cursor:
+        pointer;
+
+    font-size:
+        19px;
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+/* =====================================================
+   SALDO
+===================================================== */
+
+.balance-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color:
+        white;
+
+    border-radius:
+        22px;
+
+    padding:
+        25px;
+
+    margin-bottom:
+        20px;
+
+    box-shadow:
+        0 15px 35px
+        rgba(37,99,235,0.22);
+}
+
+
+.balance-label {
+
+    opacity:
+        0.8;
+
+    font-size:
+        14px;
+}
+
+
+.balance {
+
+    font-size:
+        36px;
+
+    font-weight:
+        bold;
+
+    margin:
+        8px 0;
+}
+
+
+.balance-period {
+
+    opacity:
+        0.8;
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        20px;
+}
+
+
+.balance-info {
+
+    display:
+        flex;
+
+    gap:
+        30px;
+
+    flex-wrap:
+        wrap;
+}
+
+
+.balance-info small {
+
+    opacity:
+        0.75;
+}
+
+
+.balance-info strong {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    font-size:
+        16px;
+}
+
+
+/* =====================================================
+   STATISTIK
+===================================================== */
+
+.stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:
+        15px;
+
+    margin-bottom:
+        20px;
+}
+
+
+.stat-card {
+
+    background:
+        var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    padding:
+        20px;
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+.stat-title {
+
+    color:
+        var(--muted);
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        8px;
+}
+
+
+.stat-value {
+
+    font-size:
+        22px;
+
+    font-weight:
+        bold;
+}
+
+
+.income {
+
+    color:
+        var(--income);
+}
+
+
+.expense {
+
+    color:
+        var(--expense);
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.filter-card {
+
+    background:
+        var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    padding:
+        20px;
+
+    margin-bottom:
+        20px;
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+.filter-title {
+
+    font-size:
+        16px;
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        15px;
+}
+
+
+.filters {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.1fr
+        1fr
+        1fr
+        1fr
+        1.5fr;
+
+    gap:
+        10px;
+}
+
+
+select,
+input {
+
+    width:
+        100%;
+
+    padding:
+        12px 13px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    background:
+        var(--card);
+
+    color:
+        var(--text);
+
+    outline:
+        none;
+
+    font-size:
+        14px;
+}
+
+
+select:focus,
+input:focus {
+
+    border-color:
+        var(--primary);
+}
+
+
+/* =====================================================
+   TOMBOL REKAP
+===================================================== */
+
+.action-buttons {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr;
+
+    gap:
+        10px;
+
+    margin-bottom:
+        20px;
+}
+
+
+.action-btn {
+
+    border:
+        none;
+
+    padding:
+        15px;
+
+    border-radius:
+        13px;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        bold;
+
+    font-size:
+        15px;
+
+    transition:
+        0.2s;
+}
+
+
+.copy-btn {
+
+    background:
+        var(--primary);
+
+    color:
+        white;
+}
+
+
+.copy-btn:hover {
+
+    background:
+        var(--primary-dark);
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.card {
+
+    background:
+        var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    padding:
+        22px;
+
+    box-shadow:
+        var(--shadow);
+}
+
+
+/* =====================================================
+   REKAP
+===================================================== */
+
+.rekap-box {
+
+    margin-bottom:
+        20px;
+}
+
+
+.rekap-title {
+
+    font-size:
+        18px;
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        15px;
+}
+
+
+.rekap-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    padding:
+        8px 0;
+
+    font-size:
+        14px;
+}
+
+
+.rekap-total {
+
+    border-top:
+        1px solid var(--border);
+
+    margin-top:
+        7px;
+
+    padding-top:
+        12px;
+
+    font-size:
+        16px;
+
+    font-weight:
+        bold;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        370px 1fr;
+
+    gap:
+        20px;
+}
+
+
+/* =====================================================
+   DASHBOARD ANALISIS
+===================================================== */
+
+.dashboard-card {
+    margin-bottom: 20px;
+}
+
+.dashboard-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.dashboard-item {
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card);
+    min-width: 0;
+}
+
+.dashboard-label {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.dashboard-value {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.dashboard-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+    line-height: 1.4;
+}
+
+@media (max-width: 800px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.card-title {
+
+    font-size:
+        18px;
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        18px;
+}
+
+
+.form-group {
+
+    margin-bottom:
+        13px;
+}
+
+
+.form-group label {
+
+    display:
+        block;
+
+    font-size:
+        13px;
+
+    color:
+        var(--muted);
+
+    margin-bottom:
+        6px;
+}
+
+
+.type-buttons {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        8px;
+}
+
+
+.type-btn {
+
+    padding:
+        12px;
+
+    border-radius:
+        11px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--card);
+
+    color:
+        var(--text);
+
+    cursor:
+        pointer;
+
+    font-weight:
+        bold;
+}
+
+
+.type-btn.active.income-type {
+
+    background:
+        var(--income-soft);
+
+    color:
+        var(--income);
+
+    border-color:
+        var(--income);
+}
+
+
+.type-btn.active.expense-type {
+
+    background:
+        var(--expense-soft);
+
+    color:
+        var(--expense);
+
+    border-color:
+        var(--expense);
+}
+
+
+.submit-btn {
+
+    width:
+        100%;
+
+    border:
+        none;
+
+    background:
+        var(--primary);
+
+    color:
+        white;
+
+    padding:
+        13px;
+
+    border-radius:
+        11px;
+
+    font-size:
+        15px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+}
+
+
+.submit-btn:hover {
+
+    background:
+        var(--primary-dark);
+}
+
+
+.cancel-btn {
+
+    width:
+        100%;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        transparent;
+
+    color:
+        var(--text);
+
+    padding:
+        11px;
+
+    border-radius:
+        11px;
+
+    cursor:
+        pointer;
+
+    margin-top:
+        8px;
+
+    display:
+        none;
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+.history-header {
+
+    margin-bottom:
+        18px;
+}
+
+
+.history-header h2 {
+
+    font-size:
+        18px;
+}
+
+
+.history-count {
+
+    color:
+        var(--muted);
+
+    font-size:
+        13px;
+
+    margin-top:
+        3px;
+}
+
+
+.transaction-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+}
+
+
+.transaction {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    padding:
+        14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        14px;
+
+    background:
+        var(--card);
+}
+
+
+.transaction-icon {
+
+    width:
+        43px;
+
+    height:
+        43px;
+
+    border-radius:
+        12px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    font-size:
+        20px;
+}
+
+
+.income-icon {
+
+    background:
+        var(--income-soft);
+}
+
+
+.expense-icon {
+
+    background:
+        var(--expense-soft);
+}
+
+
+.transaction-info {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+}
+
+
+.transaction-name {
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        4px;
+
+    word-break:
+        break-word;
+}
+
+
+.transaction-meta {
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    line-height:
+        1.5;
+}
+
+
+.transaction-right {
+
+    text-align:
+        right;
+}
+
+
+.transaction-amount {
+
+    font-weight:
+        bold;
+
+    font-size:
+        14px;
+}
+
+
+.transaction-actions {
+
+    display:
+        flex;
+
+    gap:
+        4px;
+
+    margin-top:
+        5px;
+
+    justify-content:
+        flex-end;
+}
+
+
+.small-btn {
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    cursor:
+        pointer;
+
+    color:
+        var(--muted);
+
+    padding:
+        3px 5px;
+
+    font-size:
+        12px;
+}
+
+
+.small-btn:hover {
+
+    color:
+        var(--primary);
+}
+
+
+.delete-btn:hover {
+
+    color:
+        var(--expense);
+}
+
+
+/* =====================================================
+   GRAFIK
+===================================================== */
+
+.chart-card {
+
+    margin-top:
+        20px;
+}
+
+
+.chart-title {
+
+    font-size:
+        18px;
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        18px;
+}
+
+
+.chart-row {
+
+    margin-bottom:
+        14px;
+}
+
+
+.chart-label {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        10px;
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        6px;
+}
+
+
+.bar-bg {
+
+    height:
+        10px;
+
+    border-radius:
+        20px;
+
+    background:
+        var(--border);
+
+    overflow:
+        hidden;
+}
+
+
+.bar {
+
+    height:
+        100%;
+
+    border-radius:
+        20px;
+
+    background:
+        var(--primary);
+
+    transition:
+        width 0.5s;
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty {
+
+    text-align:
+        center;
+
+    padding:
+        45px 20px;
+
+    color:
+        var(--muted);
+}
+
+
+.empty-icon {
+
+    font-size:
+        40px;
+
+    margin-bottom:
+        10px;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+
+    position:
+        fixed;
+
+    left:
+        50%;
+
+    bottom:
+        25px;
+
+    transform:
+        translateX(-50%)
+        translateY(100px);
+
+    background:
+        #111827;
+
+    color:
+        white;
+
+    padding:
+        12px 18px;
+
+    border-radius:
+        12px;
+
+    font-size:
+        14px;
+
+    opacity:
+        0;
+
+    pointer-events:
+        none;
+
+    transition:
+        0.3s;
+
+    z-index:
+        9999;
+}
+
+
+.toast.show {
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+    opacity:
+        1;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+
+    text-align:
+        center;
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    margin-top:
+        30px;
+}
+
+
+
+/* =====================================================
+   BACKUP & IMPORT
+===================================================== */
+
+.backup-card {
+
+    margin-top: 20px;
+
+}
+
+.backup-title {
+
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
+
+}
+
+.backup-desc {
+
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+
+}
+
+.backup-actions {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+}
+
+.backup-btn {
+
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    background: var(--primary);
+    color: white;
+    transition: transform .15s, opacity .15s;
+
+}
+
+.backup-btn:hover {
+    transform: translateY(-1px);
+    opacity: .92;
+}
+
+.backup-btn.secondary {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+@media (max-width: 650px) {
+    .backup-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 950px) {
+
+    .filters {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .main-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .container {
+
+        width:
+            92%;
+
+        padding-top:
+            18px;
+    }
+
+
+    header {
+
+        align-items:
+            flex-start;
+    }
+
+
+    .logo h1 {
+
+        font-size:
+            22px;
+    }
+
+
+    .balance {
+
+        font-size:
+            29px;
+    }
+
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .filters {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .transaction {
+
+        align-items:
+            flex-start;
+    }
+
+
+    .transaction-right {
+
+        margin-left:
+            auto;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+
+        <h1>
+            💰 MizanKu
+        </h1>
+
+        <p>
+            Catatan keuangan pribadi
+        </p>
+
+    </div>
+
+
+    <div style="display:flex; gap:8px; align-items:center;">
+
+        <button
+            class="icon-btn"
+            id="installBtn"
+            type="button"
+            title="Install MizanKu"
+            style="display:none;">
+
+            📱
+
+        </button>
+
+        <button
+            class="icon-btn"
+            id="themeBtn"
+            onclick="toggleDarkMode()">
+
+            🌙
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SALDO
+===================================================== -->
+
+<section class="balance-card">
+
+    <div class="balance-label">
+
+        Saldo Periode
+
+    </div>
+
+
+    <div
+        class="balance"
+        id="balance">
+
+        Rp0
+
+    </div>
+
+
+    <div
+        class="balance-period"
+        id="balancePeriod">
+
+        Bulan Ini
+
+    </div>
+
+
+    <div class="balance-info">
+
+        <div>
+
+            <small>
+                📥 Pemasukan
+            </small>
+
+            <strong
+                id="balanceIncome">
+
+                Rp0
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                📤 Pengeluaran
+            </small>
+
+            <strong
+                id="balanceExpense">
+
+                Rp0
+
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STATISTIK
+===================================================== -->
+
+<section class="stats">
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            📥 Total Pemasukan
+        </div>
+
+        <div
+            class="stat-value income"
+            id="totalIncome">
+
+            Rp0
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            📤 Total Pengeluaran
+        </div>
+
+        <div
+            class="stat-value expense"
+            id="totalExpense">
+
+            Rp0
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            📊 Jumlah Transaksi
+        </div>
+
+        <div
+            class="stat-value"
+            id="totalTransactions">
+
+            0
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     FILTER
+===================================================== -->
+
+<section class="filter-card">
+
+    <div class="filter-title">
+
+        📅 Pilih Periode Rekap
+
+    </div>
+
+
+    <div class="filters">
+
+
+        <select
+            id="periodFilter"
+            onchange="render()">
+
+            <option value="month">
+                Bulan
+            </option>
+
+            <option value="week">
+                Minggu Ini
+            </option>
+
+            <option value="year">
+                Tahun
+            </option>
+
+            <option value="all">
+                Semua
+            </option>
+
+        </select>
+
+
+        <select
+            id="monthFilter"
+            onchange="render()">
+
+            <option value="0">
+                Januari
+            </option>
+
+            <option value="1">
+                Februari
+            </option>
+
+            <option value="2">
+                Maret
+            </option>
+
+            <option value="3">
+                April
+            </option>
+
+            <option value="4">
+                Mei
+            </option>
+
+            <option value="5">
+                Juni
+            </option>
+
+            <option value="6">
+                Juli
+            </option>
+
+            <option value="7">
+                Agustus
+            </option>
+
+            <option value="8">
+                September
+            </option>
+
+            <option value="9">
+                Oktober
+            </option>
+
+            <option value="10">
+                November
+            </option>
+
+            <option value="11">
+                Desember
+            </option>
+
+        </select>
+
+
+        <select
+            id="yearFilter"
+            onchange="render()">
+
+        </select>
+
+
+        <select
+            id="typeFilter"
+            onchange="render()">
+
+            <option value="all">
+                Semua Jenis
+            </option>
+
+            <option value="income">
+                📥 Pemasukan
+            </option>
+
+            <option value="expense">
+                📤 Pengeluaran
+            </option>
+
+        </select>
+
+
+        <input
+            type="search"
+            id="searchFilter"
+            placeholder="🔎 Cari transaksi..."
+            oninput="render()">
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TOMBOL COPY
+===================================================== -->
+
+<section class="action-buttons">
+
+    <button
+        class="action-btn copy-btn"
+        onclick="copyRekap()">
+
+        📋 Salin Rekap untuk Abi
+
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     REKAP
+===================================================== -->
+
+<section class="card rekap-box">
+
+
+    <div class="rekap-title">
+
+        📊 Ringkasan Periode
+
+    </div>
+
+
+    <div class="rekap-row">
+
+        <span>
+            Periode
+        </span>
+
+        <strong id="rekapPeriod">
+            -
+        </strong>
+
+    </div>
+
+
+    <div class="rekap-row">
+
+        <span>
+            📥 Pemasukan
+        </span>
+
+        <strong
+            class="income"
+            id="rekapIncome">
+
+            Rp0
+
+        </strong>
+
+    </div>
+
+
+    <div class="rekap-row">
+
+        <span>
+            📤 Pengeluaran
+        </span>
+
+        <strong
+            class="expense"
+            id="rekapExpense">
+
+            Rp0
+
+        </strong>
+
+    </div>
+
+
+    <div class="rekap-row rekap-total">
+
+        <span>
+            💵 Saldo
+        </span>
+
+        <strong id="rekapBalance">
+
+            Rp0
+
+        </strong>
+
+    </div>
+
+
+    <div class="rekap-row">
+
+        <span>
+            📌 Jumlah transaksi
+        </span>
+
+        <strong id="rekapCount">
+
+            0
+
+        </strong>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     DASHBOARD ANALISIS — BAB 2
+===================================================== -->
+
+<section class="card dashboard-card">
+
+    <div class="dashboard-title">
+        🔎 Ringkasan Cepat
+    </div>
+
+    <div class="dashboard-subtitle">
+        Analisis otomatis berdasarkan periode yang sedang dipilih.
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-item">
+            <div class="dashboard-label">💰 Rasio Sisa</div>
+            <div class="dashboard-value" id="dashboardSavingsRate">0%</div>
+            <div class="dashboard-sub">Persentase pemasukan yang tersisa</div>
+        </div>
+
+        <div class="dashboard-item">
+            <div class="dashboard-label">📅 Rata-rata Pengeluaran</div>
+            <div class="dashboard-value" id="dashboardAvgExpense">Rp0</div>
+            <div class="dashboard-sub" id="dashboardAvgExpenseSub">Per transaksi pengeluaran</div>
+        </div>
+
+        <div class="dashboard-item">
+            <div class="dashboard-label">🏆 Kategori Terbesar</div>
+            <div class="dashboard-value" id="dashboardTopCategory">-</div>
+            <div class="dashboard-sub" id="dashboardTopCategorySub">Belum ada pengeluaran</div>
+        </div>
+
+        <div class="dashboard-item">
+            <div class="dashboard-label">💸 Pengeluaran Terbesar</div>
+            <div class="dashboard-value" id="dashboardLargestExpense">Rp0</div>
+            <div class="dashboard-sub" id="dashboardLargestExpenseSub">Belum ada transaksi</div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="main-grid">
+
+
+<!-- =====================================================
+     FORM
+===================================================== -->
+
+<section class="card">
+
+
+    <div class="card-title">
+
+        ➕ Tambah Transaksi
+
+    </div>
+
+
+    <form
+        id="transactionForm">
+
+
+        <div class="form-group">
+
+            <label>
+                Jenis Transaksi
+            </label>
+
+
+            <div class="type-buttons">
+
+
+                <button
+                    type="button"
+                    class="
+                        type-btn
+                        active
+                        income-type
+                    "
+                    id="incomeBtn"
+                    onclick="
+                        setType('income')
+                    ">
+
+                    📥 Pemasukan
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        type-btn
+                        expense-type
+                    "
+                    id="expenseBtn"
+                    onclick="
+                        setType('expense')
+                    ">
+
+                    📤 Pengeluaran
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Keterangan
+            </label>
+
+            <input
+                type="text"
+                id="description"
+                placeholder="Contoh: Uang bulanan"
+                required>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Nominal
+            </label>
+
+            <input
+                type="number"
+                id="amount"
+                placeholder="Contoh: 500000"
+                min="1"
+                required>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Kategori
+            </label>
+
+
+            <select id="category">
+
+                <option value="Umum">
+                    Umum
+                </option>
+
+                <option value="Makan">
+                    🍚 Makan
+                </option>
+
+                <option value="Transportasi">
+                    🚗 Transportasi
+                </option>
+
+                <option value="Pendidikan">
+                    📚 Pendidikan
+                </option>
+
+                <option value="Kebutuhan">
+                    🛒 Kebutuhan
+                </option>
+
+                <option value="Ibadah">
+                    🕌 Ibadah
+                </option>
+
+                <option value="Pekerjaan">
+                    💼 Pekerjaan
+                </option>
+
+                <option value="Kesehatan">
+                    🏥 Kesehatan
+                </option>
+
+                <option value="Lainnya">
+                    📦 Lainnya
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Tanggal
+            </label>
+
+            <input
+                type="date"
+                id="date"
+                required>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Catatan
+            </label>
+
+            <input
+                type="text"
+                id="note"
+                placeholder="Opsional">
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="submit-btn"
+            id="submitBtn">
+
+            💾 Simpan Transaksi
+
+        </button>
+
+
+        <button
+            type="button"
+            class="cancel-btn"
+            id="cancelBtn"
+            onclick="cancelEdit()">
+
+            Batal Edit
+
+        </button>
+
+
+    </form>
+
+</section>
+
+
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<section class="card">
+
+
+    <div class="history-header">
+
+        <h2>
+            📜 Riwayat Transaksi
+        </h2>
+
+
+        <div
+            class="history-count"
+            id="historyCount">
+
+            0 transaksi
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="transaction-list"
+        id="transactionList">
+
+    </div>
+
+
+</section>
+
+
+</div>
+
+
+<!-- =====================================================
+     GRAFIK
+===================================================== -->
+
+<section class="card chart-card">
+
+
+    <div class="chart-title">
+
+        📈 Pengeluaran Berdasarkan Kategori
+
+    </div>
+
+
+    <div id="chart">
+
+        Belum ada data.
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     BACKUP & IMPORT
+===================================================== -->
+
+<section class="card backup-card">
+
+    <div class="backup-title">
+        💾 Backup & Pemulihan Data
+    </div>
+
+    <div class="backup-desc">
+        Simpan semua catatan MizanKu ke file <strong>.json</strong> agar aman.
+        File backup bisa dipindahkan ke HP atau perangkat lain, lalu digabungkan kembali secara offline tanpa menghapus data yang sudah ada.
+    </div>
+
+    <div class="backup-actions">
+
+        <button
+            type="button"
+            class="backup-btn"
+            onclick="backupData()">
+            💾 Backup Data
+        </button>
+
+        <button
+            type="button"
+            class="backup-btn secondary"
+            onclick="document.getElementById('importFile').click()">
+            📥 Gabungkan Data
+        </button>
+
+    </div>
+
+    <input
+        type="file"
+        id="importFile"
+        accept="application/json,.json"
+        style="display:none"
+        onchange="importData(event)">
+
+</section>
+
+<footer>
+
+    MizanKu •
+    Data tersimpan di browser perangkat ini
+
+</footer>
+
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast">
+
+    Berhasil!
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let transactions =
+    JSON.parse(
+        localStorage.getItem(
+            "catatanKeuanganV22"
+        )
+    ) || [];
+
+
+let currentType =
+    "income";
+
+
+let editingId =
+    null;
+
+
+/* =====================================================
+   ELEMENT
+===================================================== */
+
+const form =
+    document.getElementById(
+        "transactionForm"
+    );
+
+
+const description =
+    document.getElementById(
+        "description"
+    );
+
+
+const amount =
+    document.getElementById(
+        "amount"
+    );
+
+
+const category =
+    document.getElementById(
+        "category"
+    );
+
+
+const dateInput =
+    document.getElementById(
+        "date"
+    );
+
+
+const note =
+    document.getElementById(
+        "note"
+    );
+
+
+const submitBtn =
+    document.getElementById(
+        "submitBtn"
+    );
+
+
+const cancelBtn =
+    document.getElementById(
+        "cancelBtn"
+    );
+
+
+/* =====================================================
+   TANGGAL HARI INI
+===================================================== */
+
+function today() {
+
+    const d =
+        new Date();
+
+
+    const year =
+        d.getFullYear();
+
+
+    const month =
+        String(
+            d.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            d.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
+}
+
+
+dateInput.value =
+    today();
+
+
+normalizeTransactionIds();
+
+
+/* =====================================================
+   TAHUN FILTER
+===================================================== */
+
+function setupYears() {
+
+    const select =
+        document.getElementById(
+            "yearFilter"
+        );
+
+
+    const currentYear =
+        new Date()
+            .getFullYear();
+
+
+    for (
+        let year =
+            currentYear - 5;
+
+        year <=
+            currentYear + 5;
+
+        year++
+    ) {
+
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            year;
+
+
+        option.textContent =
+            year;
+
+
+        if (
+            year ===
+            currentYear
+        ) {
+
+            option.selected =
+                true;
+
+        }
+
+
+        select.appendChild(
+            option
+        );
+
+    }
+
+}
+
+
+setupYears();
+
+
+/* =====================================================
+   SET TIPE
+===================================================== */
+
+function setType(type) {
+
+    currentType =
+        type;
+
+
+    const incomeBtn =
+        document.getElementById(
+            "incomeBtn"
+        );
+
+
+    const expenseBtn =
+        document.getElementById(
+            "expenseBtn"
+        );
+
+
+    incomeBtn.classList.remove(
+        "active"
+    );
+
+
+    expenseBtn.classList.remove(
+        "active"
+    );
+
+
+    if (
+        type ===
+        "income"
+    ) {
+
+        incomeBtn.classList.add(
+            "active"
+        );
+
+    } else {
+
+        expenseBtn.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SIMPAN
+===================================================== */
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const data = {
+
+            id:
+                editingId ||
+                Date.now(),
+
+            type:
+                currentType,
+
+            description:
+                description.value
+                    .trim(),
+
+            amount:
+                Number(
+                    amount.value
+                ),
+
+            category:
+                category.value,
+
+            date:
+                dateInput.value,
+
+            note:
+                note.value.trim()
+
+        };
+
+
+        if (
+            editingId
+        ) {
+
+            transactions =
+                transactions.map(
+                    item =>
+
+                        item.id ===
+                        editingId
+
+                            ? data
+
+                            : item
+                );
+
+
+            showToast(
+                "✏️ Transaksi diperbarui"
+            );
+
+        } else {
+
+            transactions.push(
+                data
+            );
+
+
+            showToast(
+                "✅ Transaksi disimpan"
+            );
+
+        }
+
+
+        saveData();
+
+        resetForm();
+
+        render();
+
+    }
+);
+
+
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
+function saveData() {
+
+    localStorage.setItem(
+        "catatanKeuanganV22",
+        JSON.stringify(
+            transactions
+        )
+    );
+
+}
+
+
+/* =====================================================
+   RESET FORM
+===================================================== */
+
+function resetForm() {
+
+    form.reset();
+
+
+    dateInput.value =
+        today();
+
+
+    currentType =
+        "income";
+
+
+    setType(
+        "income"
+    );
+
+
+    editingId =
+        null;
+
+
+    submitBtn.textContent =
+        "💾 Simpan Transaksi";
+
+
+    cancelBtn.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   RUPIAH
+===================================================== */
+
+function rupiah(number) {
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style:
+                "currency",
+
+            currency:
+                "IDR",
+
+            maximumFractionDigits:
+                0
+        }
+    ).format(
+        number
+    );
+
+}
+
+
+/* =====================================================
+   TANGGAL
+===================================================== */
+
+function formatDate(
+    dateString
+) {
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            day:
+                "2-digit",
+
+            month:
+                "short",
+
+            year:
+                "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   BULAN
+===================================================== */
+
+const months = [
+
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+
+];
+
+
+/* =====================================================
+   NAMA PERIODE
+===================================================== */
+
+function getPeriodName() {
+
+    const period =
+        document.getElementById(
+            "periodFilter"
+        ).value;
+
+
+    const month =
+        Number(
+            document.getElementById(
+                "monthFilter"
+            ).value
+        );
+
+
+    const year =
+        Number(
+            document.getElementById(
+                "yearFilter"
+            ).value
+        );
+
+
+    if (
+        period ===
+        "month"
+    ) {
+
+        return (
+            months[month]
+            +
+            " "
+            +
+            year
+        );
+
+    }
+
+
+    if (
+        period ===
+        "year"
+    ) {
+
+        return (
+            "Tahun "
+            +
+            year
+        );
+
+    }
+
+
+    if (
+        period ===
+        "week"
+    ) {
+
+        return "Minggu Ini";
+
+    }
+
+
+    return "Semua Transaksi";
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function getFilteredTransactions() {
+
+    const period =
+        document.getElementById(
+            "periodFilter"
+        ).value;
+
+
+    const selectedMonth =
+        Number(
+            document.getElementById(
+                "monthFilter"
+            ).value
+        );
+
+
+    const selectedYear =
+        Number(
+            document.getElementById(
+                "yearFilter"
+            ).value
+        );
+
+
+    const selectedType =
+        document.getElementById(
+            "typeFilter"
+        ).value;
+
+
+    const search =
+        document.getElementById(
+            "searchFilter"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    const now =
+        new Date();
+
+
+    return transactions.filter(
+        item => {
+
+            const date =
+                new Date(
+                    item.date +
+                    "T00:00:00"
+                );
+
+
+            /* JENIS */
+
+            if (
+                selectedType !==
+                "all"
+                &&
+                item.type !==
+                selectedType
+            ) {
+
+                return false;
+
+            }
+
+
+            /* CARI */
+
+            if (
+                search
+                &&
+                !(
+                    item.description
+                        .toLowerCase()
+                        .includes(
+                            search
+                        )
+
+                    ||
+
+                    item.category
+                        .toLowerCase()
+                        .includes(
+                            search
+                        )
+
+                    ||
+
+                    item.note
+                        .toLowerCase()
+                        .includes(
+                            search
+                        )
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            /* SEMUA */
+
+            if (
+                period ===
+                "all"
+            ) {
+
+                return true;
+
+            }
+
+
+            /* TAHUN */
+
+            if (
+                period ===
+                "year"
+            ) {
+
+                return (
+                    date.getFullYear()
+                    ===
+                    selectedYear
+                );
+
+            }
+
+
+            /* BULAN */
+
+            if (
+                period ===
+                "month"
+            ) {
+
+                return (
+                    date.getMonth()
+                    ===
+                    selectedMonth
+                    &&
+                    date.getFullYear()
+                    ===
+                    selectedYear
+                );
+
+            }
+
+
+            /* MINGGU */
+
+            if (
+                period ===
+                "week"
+            ) {
+
+                const currentDay =
+                    now.getDay();
+
+
+                const diff =
+                    currentDay ===
+                    0
+                        ? -6
+                        : 1 -
+                          currentDay;
+
+
+                const monday =
+                    new Date(
+                        now
+                    );
+
+
+                monday.setDate(
+                    now.getDate()
+                    +
+                    diff
+                );
+
+
+                monday.setHours(
+                    0,
+                    0,
+                    0,
+                    0
+                );
+
+
+                const sunday =
+                    new Date(
+                        monday
+                    );
+
+
+                sunday.setDate(
+                    monday.getDate()
+                    +
+                    6
+                );
+
+
+                sunday.setHours(
+                    23,
+                    59,
+                    59,
+                    999
+                );
+
+
+                return (
+                    date >=
+                    monday
+                    &&
+                    date <=
+                    sunday
+                );
+
+            }
+
+
+            return true;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function render() {
+
+    let filtered =
+        getFilteredTransactions();
+
+
+    filtered.sort(
+        (a, b) =>
+            new Date(
+                b.date
+            )
+            -
+            new Date(
+                a.date
+            )
+    );
+
+
+    let incomeTotal =
+        0;
+
+
+    let expenseTotal =
+        0;
+
+
+    filtered.forEach(
+        item => {
+
+            if (
+                item.type ===
+                "income"
+            ) {
+
+                incomeTotal +=
+                    item.amount;
+
+            } else {
+
+                expenseTotal +=
+                    item.amount;
+
+            }
+
+        }
+    );
+
+
+    const balance =
+        incomeTotal -
+        expenseTotal;
+
+
+    const periodName =
+        getPeriodName();
+
+
+    /* STAT */
+
+    document.getElementById(
+        "totalIncome"
+    ).textContent =
+        rupiah(
+            incomeTotal
+        );
+
+
+    document.getElementById(
+        "totalExpense"
+    ).textContent =
+        rupiah(
+            expenseTotal
+        );
+
+
+    document.getElementById(
+        "totalTransactions"
+    ).textContent =
+        filtered.length;
+
+
+    /* SALDO */
+
+    document.getElementById(
+        "balance"
+    ).textContent =
+        rupiah(
+            balance
+        );
+
+
+    /* DASHBOARD ANALISIS */
+
+    // 1. Rasio sisa: berapa persen pemasukan yang masih tersisa.
+    const savingsRate =
+        incomeTotal > 0
+            ? Math.round(
+                (balance / incomeTotal) * 100
+              )
+            : 0;
+
+
+    document.getElementById(
+        "dashboardSavingsRate"
+    ).textContent =
+        savingsRate + "%";
+
+
+    // 2. Rata-rata pengeluaran per transaksi.
+    const expenseTransactions =
+        filtered.filter(
+            item => item.type === "expense"
+        );
+
+
+    const expenseCount =
+        expenseTransactions.length;
+
+
+    const averageExpense =
+        expenseCount > 0
+            ? expenseTotal / expenseCount
+            : 0;
+
+
+    document.getElementById(
+        "dashboardAvgExpense"
+    ).textContent =
+        rupiah(
+            averageExpense
+        );
+
+
+    document.getElementById(
+        "dashboardAvgExpenseSub"
+    ).textContent =
+        expenseCount > 0
+            ? "Per transaksi pengeluaran"
+            : "Belum ada pengeluaran";
+
+
+    // 3. Kategori dengan total pengeluaran terbesar.
+    const categoryTotals = {};
+
+
+    expenseTransactions.forEach(
+        item => {
+
+            const category =
+                item.category || "Umum";
+
+
+            categoryTotals[category] =
+                (categoryTotals[category] || 0) +
+                Number(item.amount || 0);
+
+        }
+    );
+
+
+    const topCategory =
+        Object.entries(categoryTotals)
+            .sort((a, b) => b[1] - a[1])[0];
+
+
+    document.getElementById(
+        "dashboardTopCategory"
+    ).textContent =
+        topCategory
+            ? topCategory[0]
+            : "-";
+
+
+    document.getElementById(
+        "dashboardTopCategorySub"
+    ).textContent =
+        topCategory
+            ? rupiah(topCategory[1]) + " pengeluaran"
+            : "Belum ada pengeluaran";
+
+
+    // 4. Satu transaksi pengeluaran terbesar.
+    const largestExpense =
+        expenseTransactions
+            .slice()
+            .sort(
+                (a, b) =>
+                    Number(b.amount || 0) -
+                    Number(a.amount || 0)
+            )[0];
+
+
+    document.getElementById(
+        "dashboardLargestExpense"
+    ).textContent =
+        largestExpense
+            ? rupiah(largestExpense.amount)
+            : "Rp0";
+
+
+    document.getElementById(
+        "dashboardLargestExpenseSub"
+    ).textContent =
+        largestExpense
+            ? escapeHtml(largestExpense.description)
+            : "Belum ada transaksi";
+
+
+    document.getElementById(
+        "balanceIncome"
+    ).textContent =
+        rupiah(
+            incomeTotal
+        );
+
+
+    document.getElementById(
+        "balanceExpense"
+    ).textContent =
+        rupiah(
+            expenseTotal
+        );
+
+
+    document.getElementById(
+        "balancePeriod"
+    ).textContent =
+        periodName;
+
+
+    /* REKAP */
+
+    document.getElementById(
+        "rekapPeriod"
+    ).textContent =
+        periodName;
+
+
+    document.getElementById(
+        "rekapIncome"
+    ).textContent =
+        rupiah(
+            incomeTotal
+        );
+
+
+    document.getElementById(
+        "rekapExpense"
+    ).textContent =
+        rupiah(
+            expenseTotal
+        );
+
+
+    document.getElementById(
+        "rekapBalance"
+    ).textContent =
+        rupiah(
+            balance
+        );
+
+
+    document.getElementById(
+        "rekapCount"
+    ).textContent =
+        filtered.length;
+
+
+    /* HISTORY */
+
+    const list =
+        document.getElementById(
+            "transactionList"
+        );
+
+
+    document.getElementById(
+        "historyCount"
+    ).textContent =
+        filtered.length +
+        " transaksi";
+
+
+    list.innerHTML =
+        "";
+
+
+    if (
+        filtered.length ===
+        0
+    ) {
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🗂️
+                </div>
+
+                <strong>
+                    Belum ada transaksi
+                </strong>
+
+                <p
+                    style="
+                        margin-top:6px;
+                    ">
+
+                    Tidak ada transaksi
+                    pada periode ini.
+
+                </p>
+
+            </div>
+
+        `;
+
+    } else {
+
+        filtered.forEach(
+            item => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "transaction";
+
+
+                const icon =
+                    item.type ===
+                    "income"
+                        ? "📥"
+                        : "📤";
+
+
+                const amountClass =
+                    item.type ===
+                    "income"
+                        ? "income"
+                        : "expense";
+
+
+                const sign =
+                    item.type ===
+                    "income"
+                        ? "+"
+                        : "-";
+
+
+                div.innerHTML = `
+
+                    <div
+                        class="
+                            transaction-icon
+                            ${
+                                item.type ===
+                                "income"
+                                    ? "income-icon"
+                                    : "expense-icon"
+                            }
+                        ">
+
+                        ${icon}
+
+                    </div>
+
+
+                    <div
+                        class="
+                            transaction-info
+                        ">
+
+                        <div
+                            class="
+                                transaction-name
+                            ">
+
+                            ${escapeHtml(
+                                item.description
+                            )}
+
+                        </div>
+
+
+                        <div
+                            class="
+                                transaction-meta
+                            ">
+
+                            ${formatDate(
+                                item.date
+                            )}
+
+                            •
+
+                            ${escapeHtml(
+                                item.category
+                            )}
+
+                            ${
+                                item.note
+                                    ? " • " +
+                                      escapeHtml(
+                                          item.note
+                                      )
+                                    : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            transaction-right
+                        ">
+
+                        <div
+                            class="
+                                transaction-amount
+                                ${amountClass}
+                            ">
+
+                            ${sign}
+                            ${rupiah(
+                                item.amount
+                            )}
+
+                        </div>
+
+
+                        <div
+                            class="
+                                transaction-actions
+                            ">
+
+                            <button
+                                class="small-btn"
+                                onclick="
+                                    editTransaction(
+                                        ${item.id}
+                                    )
+                                ">
+
+                                ✏️ Edit
+
+                            </button>
+
+
+                            <button
+                                class="
+                                    small-btn
+                                    delete-btn
+                                "
+                                onclick="
+                                    deleteTransaction(
+                                        ${item.id}
+                                    )
+                                ">
+
+                                🗑️ Hapus
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                list.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    renderChart(
+        filtered
+    );
+
+}
+
+
+/* =====================================================
+   GRAFIK
+===================================================== */
+
+function renderChart(
+    data
+) {
+
+    const chart =
+        document.getElementById(
+            "chart"
+        );
+
+
+    const expenses = {};
+
+
+    data.forEach(
+        item => {
+
+            if (
+                item.type !==
+                "expense"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !expenses[
+                    item.category
+                ]
+            ) {
+
+                expenses[
+                    item.category
+                ] =
+                    0;
+
+            }
+
+
+            expenses[
+                item.category
+            ] +=
+                item.amount;
+
+        }
+    );
+
+
+    const entries =
+        Object.entries(
+            expenses
+        ).sort(
+            (a, b) =>
+                b[1] -
+                a[1]
+        );
+
+
+    if (
+        entries.length ===
+        0
+    ) {
+
+        chart.innerHTML = `
+
+            <div
+                style="
+                    color:var(--muted);
+                    text-align:center;
+                    padding:20px;
+                ">
+
+                Belum ada pengeluaran
+                pada periode ini.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const max =
+        entries[0][1];
+
+
+    chart.innerHTML =
+        "";
+
+
+    entries.forEach(
+        ([name, value]) => {
+
+            const percentage =
+                (
+                    value /
+                    max
+                ) *
+                100;
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "chart-row";
+
+
+            row.innerHTML = `
+
+                <div
+                    class="chart-label">
+
+                    <span>
+                        ${escapeHtml(
+                            name
+                        )}
+                    </span>
+
+                    <strong>
+                        ${rupiah(
+                            value
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="bar-bg">
+
+                    <div
+                        class="bar"
+                        style="
+                            width:
+                            ${percentage}%;
+                        ">
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            chart.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   EDIT
+===================================================== */
+
+function editTransaction(
+    id
+) {
+
+    const item =
+        transactions.find(
+            transaction =>
+                transaction.id ===
+                id
+        );
+
+
+    if (
+        !item
+    ) {
+
+        return;
+
+    }
+
+
+    editingId =
+        id;
+
+
+    description.value =
+        item.description;
+
+
+    amount.value =
+        item.amount;
+
+
+    category.value =
+        item.category;
+
+
+    dateInput.value =
+        item.date;
+
+
+    note.value =
+        item.note;
+
+
+    setType(
+        item.type
+    );
+
+
+    submitBtn.textContent =
+        "💾 Simpan Perubahan";
+
+
+    cancelBtn.style.display =
+        "block";
+
+
+    window.scrollTo(
+        {
+            top:
+                0,
+
+            behavior:
+                "smooth"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   BATAL EDIT
+===================================================== */
+
+function cancelEdit() {
+
+    resetForm();
+
+}
+
+
+/* =====================================================
+   HAPUS
+===================================================== */
+
+function deleteTransaction(
+    id
+) {
+
+    const item =
+        transactions.find(
+            transaction =>
+                transaction.id ===
+                id
+        );
+
+
+    if (
+        !item
+    ) {
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            'Hapus transaksi "' +
+            item.description +
+            '"?'
+        );
+
+
+    if (
+        !confirmed
+    ) {
+
+        return;
+
+    }
+
+
+    transactions =
+        transactions.filter(
+            transaction =>
+                transaction.id !==
+                id
+        );
+
+
+    saveData();
+
+    render();
+
+
+    showToast(
+        "🗑️ Transaksi dihapus"
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    text
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   BUAT TEKS REKAP
+===================================================== */
+
+function generateRekapText() {
+
+    const filtered =
+        getFilteredTransactions();
+
+
+    const period =
+        getPeriodName();
+
+
+    let income =
+        0;
+
+
+    let expense =
+        0;
+
+
+    const incomeItems =
+        [];
+
+
+    const expenseItems =
+        [];
+
+
+    filtered.forEach(
+        item => {
+
+            if (
+                item.type ===
+                "income"
+            ) {
+
+                income +=
+                    item.amount;
+
+                incomeItems.push(
+                    item
+                );
+
+            } else {
+
+                expense +=
+                    item.amount;
+
+                expenseItems.push(
+                    item
+                );
+
+            }
+
+        }
+    );
+
+
+    const balance =
+        income -
+        expense;
+
+
+    let text =
+        "📊 REKAP KEUANGAN\n";
+
+
+    text +=
+        period +
+        "\n";
+
+
+    text +=
+        "━━━━━━━━━━━━━━━━━━━━\n\n";
+
+
+    /* PEMASUKAN */
+
+    text +=
+        "📥 PEMASUKAN\n";
+
+
+    if (
+        incomeItems.length ===
+        0
+    ) {
+
+        text +=
+            "• Tidak ada pemasukan\n";
+
+    } else {
+
+        incomeItems.forEach(
+            item => {
+
+                text +=
+                    "• " +
+                    item.description +
+                    ": " +
+                    rupiah(
+                        item.amount
+                    ) +
+                    "\n";
+
+            }
+        );
+
+    }
+
+
+    text +=
+        "Total pemasukan: " +
+        rupiah(
+            income
+        ) +
+        "\n\n";
+
+
+    /* PENGELUARAN */
+
+    text +=
+        "📤 PENGELUARAN\n";
+
+
+    if (
+        expenseItems.length ===
+        0
+    ) {
+
+        text +=
+            "• Tidak ada pengeluaran\n";
+
+    } else {
+
+        expenseItems.forEach(
+            item => {
+
+                text +=
+                    "• " +
+                    item.description +
+                    " (" +
+                    item.category +
+                    "): " +
+                    rupiah(
+                        item.amount
+                    ) +
+                    "\n";
+
+            }
+        );
+
+    }
+
+
+    text +=
+        "Total pengeluaran: " +
+        rupiah(
+            expense
+        ) +
+        "\n\n";
+
+
+    text +=
+        "━━━━━━━━━━━━━━━━━━━━\n";
+
+
+    text +=
+        "💵 SALDO AKHIR: " +
+        rupiah(
+            balance
+        ) +
+        "\n";
+
+
+    text +=
+        "📌 Jumlah transaksi: " +
+        filtered.length +
+        "\n";
+
+
+    text +=
+        "━━━━━━━━━━━━━━━━━━━━";
+
+
+    return text;
+
+}
+
+
+/* =====================================================
+   COPY REKAP
+===================================================== */
+
+function copyRekap() {
+
+    const text =
+        generateRekapText();
+
+
+    if (
+        navigator.clipboard
+        &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+            .writeText(
+                text
+            )
+            .then(
+                function() {
+
+                    showToast(
+                        "📋 Rekap berhasil disalin!"
+                    );
+
+                }
+            )
+            .catch(
+                function() {
+
+                    copyFallback(
+                        text
+                    );
+
+                }
+            );
+
+    } else {
+
+        copyFallback(
+            text
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   COPY FALLBACK
+===================================================== */
+
+function copyFallback(
+    text
+) {
+
+    const textarea =
+        document.createElement(
+            "textarea"
+        );
+
+
+    textarea.value =
+        text;
+
+
+    textarea.style.position =
+        "fixed";
+
+
+    textarea.style.left =
+        "-9999px";
+
+
+    document.body.appendChild(
+        textarea
+    );
+
+
+    textarea.focus();
+
+
+    textarea.select();
+
+
+    try {
+
+        document.execCommand(
+            "copy"
+        );
+
+
+        showToast(
+            "📋 Rekap berhasil disalin!"
+        );
+
+
+    } catch (
+        error
+    ) {
+
+        alert(
+            "Gagal menyalin otomatis. Silakan salin teks secara manual."
+        );
+
+    }
+
+
+    document.body.removeChild(
+        textarea
+    );
+
+}
+
+
+
+/* =====================================================
+   BACKUP DATA
+===================================================== */
+
+function backupData() {
+
+    const backup = {
+        app: "MizanKu",
+        version: 2,
+        createdAt: new Date().toISOString(),
+        transactions: transactions
+    };
+
+    const json = JSON.stringify(backup, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    link.href = url;
+    link.download = `mizanku-backup-${yyyy}-${mm}-${dd}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast("💾 Backup berhasil dibuat!");
+
+}
+
+
+/* =====================================================
+   ID & ANTI-DUPLIKAT
+===================================================== */
+
+function generateId() {
+
+    if (window.crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+
+    return "mz-" + Date.now().toString(36) + "-" +
+        Math.random().toString(36).slice(2, 10);
+
+}
+
+
+function transactionFingerprint(item) {
+
+    return JSON.stringify({
+        type: item.type || "",
+        description: item.description || "",
+        amount: Number(item.amount) || 0,
+        category: item.category || "",
+        date: item.date || "",
+        note: item.note || ""
+    });
+
+}
+
+
+function normalizeTransactionIds() {
+
+    let changed = false;
+
+    transactions = transactions.map(function(item) {
+
+        if (item && item.id) {
+            return item;
+        }
+
+        changed = true;
+
+        return {
+            ...item,
+            id: generateId()
+        };
+
+    });
+
+    if (changed) {
+        saveData();
+    }
+
+}
+
+
+/* =====================================================
+   IMPORT DATA
+===================================================== */
+
+function importData(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        try {
+
+            const data = JSON.parse(e.target.result);
+            const importedTransactions = Array.isArray(data)
+                ? data
+                : data.transactions;
+
+            if (!Array.isArray(importedTransactions)) {
+                throw new Error("Format backup tidak dikenali.");
+            }
+
+            const valid = importedTransactions.every(function(item) {
+                return item
+                    && typeof item === "object"
+                    && (item.type === "income" || item.type === "expense")
+                    && typeof item.amount === "number"
+                    && typeof item.date === "string";
+            });
+
+            if (!valid) {
+                throw new Error("Data transaksi tidak valid.");
+            }
+
+            // Siapkan ID untuk data lama dan data backup yang belum memilikinya.
+            // ID dipakai untuk mencegah transaksi yang sama masuk dua kali.
+            const existingIds = new Set();
+            const existingFingerprints = new Set();
+
+            transactions = transactions.map(function(item) {
+                const normalized = {
+                    ...item,
+                    id: item.id || generateId()
+                };
+                existingIds.add(String(normalized.id));
+                existingFingerprints.add(transactionFingerprint(normalized));
+                return normalized;
+            });
+
+            let added = [];
+            let skipped = 0;
+
+            importedTransactions.forEach(function(item) {
+                const normalized = {
+                    ...item,
+                    id: item.id || generateId()
+                };
+
+                const idExists = existingIds.has(String(normalized.id));
+                const fingerprint = transactionFingerprint(normalized);
+                const fingerprintExists = existingFingerprints.has(fingerprint);
+
+                if (idExists || fingerprintExists) {
+                    skipped++;
+                    return;
+                }
+
+                existingIds.add(String(normalized.id));
+                existingFingerprints.add(fingerprint);
+                added.push(normalized);
+            });
+
+            const confirmed = confirm(
+                "📦 Isi backup: " + importedTransactions.length + " transaksi\n" +
+                "➕ Akan ditambahkan: " + added.length + " transaksi\n" +
+                "⏭️ Sudah ada & dilewati: " + skipped + " transaksi\n\n" +
+                "Data MizanKu yang sekarang TIDAK akan dihapus.\n\n" +
+                "Lanjutkan penggabungan?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            transactions = transactions.concat(added);
+            saveData();
+            render();
+
+            showToast(
+                "📥 Gabung selesai: +" + added.length +
+                " baru, " + skipped + " dilewati"
+            );
+
+        } catch (error) {
+
+            alert(
+                "❌ Import gagal. File backup tidak valid atau rusak.\n\n"
+                + error.message
+            );
+
+        } finally {
+
+            event.target.value = "";
+
+        }
+
+    };
+
+    reader.onerror = function() {
+
+        alert("❌ File tidak dapat dibaca.");
+        event.target.value = "";
+
+    };
+
+    reader.readAsText(file);
+
+}
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+function toggleDarkMode() {
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+
+    const isDark =
+        document.body.classList.contains(
+            "dark"
+        );
+
+
+    localStorage.setItem(
+        "darkModeV22",
+        isDark
+    );
+
+
+    document.getElementById(
+        "themeBtn"
+    ).textContent =
+        isDark
+            ? "☀️"
+            : "🌙";
+
+}
+
+
+/* =====================================================
+   LOAD DARK MODE
+===================================================== */
+
+if (
+    localStorage.getItem(
+        "darkModeV22"
+    ) ===
+    "true"
+) {
+
+    document.body.classList.add(
+        "dark"
+    );
+
+
+    document.getElementById(
+        "themeBtn"
+    ).textContent =
+        "☀️";
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+
+function showToast(
+    message
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function() {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+
+}
+
+
+/* =====================================================
+   FILTER AWAL
+===================================================== */
+
+const currentDate =
+    new Date();
+
+
+document.getElementById(
+    "monthFilter"
+).value =
+    currentDate.getMonth();
+
+
+document.getElementById(
+    "yearFilter"
+).value =
+    currentDate.getFullYear();
+
+
+/* =====================================================
+   PWA / INSTALL MIZANKU
+===================================================== */
+
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", function(event) {
+
+    event.preventDefault();
+    deferredInstallPrompt = event;
+
+    if (installBtn) {
+        installBtn.style.display = "inline-flex";
+    }
+
+});
+
+if (installBtn) {
+
+    installBtn.addEventListener("click", async function() {
+
+        if (!deferredInstallPrompt) {
+            showToast("ℹ️ MizanKu siap dipasang jika browser mendukung instalasi");
+            return;
+        }
+
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        installBtn.style.display = "none";
+
+    });
+
+}
+
+window.addEventListener("appinstalled", function() {
+
+    deferredInstallPrompt = null;
+
+    if (installBtn) {
+        installBtn.style.display = "none";
+    }
+
+    showToast("📱 MizanKu berhasil dipasang!");
+
+});
+
+if ("serviceWorker" in navigator && window.isSecureContext) {
+
+    window.addEventListener("load", function() {
+
+        navigator.serviceWorker.register("sw.js")
+            .then(function() {
+                console.log("MizanKu offline service worker aktif.");
+            })
+            .catch(function(error) {
+                console.warn("Service worker gagal didaftarkan:", error);
+            });
+
+    });
+
+}
+
+/* =====================================================
+   JALANKAN
+===================================================== */
+
+render();
+
+
+</script>
+
+
+</body>
+
+</html>
